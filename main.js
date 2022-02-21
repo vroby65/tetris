@@ -1,13 +1,13 @@
 var response;
 function sendscore(user, score){
-  var ScoreService="https://sdlbasic.altervista.org/sgl.js/services/score/index.php";
+  var ScoreService="services/score/index.php";
   var xmlhttp=new XMLHttpRequest();
 	xmlhttp.open("GET",ScoreService+"?op=add&user="+user+"&score="+score,false);
 	xmlhttp.send();
 	return xmlhttp.responseXML;
 }
 function listscore(){
-   var ScoreService="https://sdlbasic.altervista.org/sgl.js/services/score/index.php";
+   var ScoreService="services/score/index.php";
    var xmlhttp=new XMLHttpRequest();
    xmlhttp.onreadystatechange=function(){
   		if (xmlhttp.readyState==4 && xmlhttp.status==200){
