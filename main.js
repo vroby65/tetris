@@ -1,24 +1,3 @@
-var response;
-function sendscore(user, score){
-  var ScoreService="services/score/index.php";
-  var xmlhttp=new XMLHttpRequest();
-	xmlhttp.open("GET",ScoreService+"?op=add&user="+user+"&score="+score,false);
-	xmlhttp.send();
-	return xmlhttp.responseXML;
-}
-function listscore(){
-   var ScoreService="services/score/index.php";
-   var xmlhttp=new XMLHttpRequest();
-   xmlhttp.onreadystatechange=function(){
-  		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-    		response=xmlhttp.responseText;
-    	}
-  	}    
-	xmlhttp.open("GET",ScoreService+"?op=list",false);
-	xmlhttp.send();
-}
-
-
 setdisplay(280,450);
 setfps(40);
 var surface_rotate=loadsurface('media/rotate.png');
@@ -318,45 +297,19 @@ function title(){
 	}
 }
 
-// - scoreplayer -------------------------------------------------------------------------
-function scoreplayer(){
-  	user=prompt("your score is "+score+ " please insert your name");
-    key=[];
-  	sendscore(user,score);
-    listscore();
-	classifica=response.split('\n');  
-	state=3;
-	i=0;  
-} 
 
 // - gameover -------------------------------------------------------------------------
 function gameover(){
 	cls( display, rgb(255,255,255) );  
   	text ( display, 20, 70, 30, rgb(0,0,0), 'Game OVER' );
   	text ( display, 10, 100, 15, rgb(0,0,255), 'press ctrl or click me to retry' );
-  	if(mousezone(10,90,180,40))
-	  	text ( display, 10, 100, 15, rgb(255,0,0), 'press ctrl or click me to retry' );
-  
-  for (var a=0; a<10;a++){
-    if (classifica[a+i]!=null){
-      		var tmp=("0000"+score).substr(-4)+"  "+user;
-        if (classifica[a+i].substr(-tmp.length)== tmp)
-    		text ( display, 20, a*20+190, 20, rgb(255,0,0), classifica[a+i]);
-    	else
-    		text ( display, 20, a*20+190, 20, rgb(0,0,255), classifica[a+i]);
-    }
-  }
-  box(display,20,130,180,40,rgb(0,0,255));
-  blt(display, 40,131,140,38,surface_arrowup);
-  box(display,20,390,180,40,rgb(0,0,255));
-  blt(display, 40,391,140,38,surface_arrowdown);
-  if (key[KEY_UP]||(mousezone(20,130,180,40) && mouseB)){i--; if (i<0)i=0;  }
-  if (key[KEY_DOWN]||(mousezone(20,390,180,40) && mouseB)){i++; if (i>90)i=90;  }
-  	if (key[KEY_CTRL]||(mouseB!=0 && mousezone(10,90,180,40))){
+ 	if (key[KEY_CTRL]||(mouseB!=0 && mousezone(10,90,180,40))){
     	state=0;
         score=0;
 	}
-}
+
+}  
+ 
 
 // - main loop -------------------------------------------------------------------------
 state=0;
@@ -364,7 +317,5 @@ score=0;
 function update() {
   if (state==0)title();
   if(state==1)game();
-  if(state==2)scoreplayer();
-  if(state==3)gameover();
- 
+  if(state==2)gameover();
 }
